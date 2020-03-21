@@ -1,0 +1,35 @@
+##############################################################################
+# name: kernel_study.txt
+# author: zhang, bob
+# date: 2020-03-21
+# description: Use this file to record the study process of the linux kernel.
+#############################################################################
+
+1. Module Structure
+
+    1) Related commands
+        lsmod: check all modules in the system, we can see the dependencies between modules
+        insmod: insert module to kernel, this will call the module_init callback in the module
+        rmmod: uninstall module from kernel, this will call the module_exit callback in the module
+        modinfo: show the information about the module, author/license/etc...
+    
+    2) API
+        module_init: register the init callback of this module, the function should declare with __init, to add code into init segment
+        module_exit: register the exit callback of this module, the function should declare with __exit, to add code into exit segment
+        MODULE_LICENSE("GPL"): declare the license of this module, we can see it when use modinfo
+        And there are other module related APIs in linx/module.h.
+
+    3) Makefile
+    ifneq($(KERNELRELEASE),)
+    obj-m:=bz_module.o  # use this to build the obj as module
+    else
+    KDIR=/lib/modules/$(shell uname -r)/build
+    all:
+        make -C $(KDIR) M=$(PWD) modules # this make command to make module independently
+    clean:
+        rm *.ko *.o *.mod.o *.mod.c *.symvers *.order
+
+    4) Check module output
+        We can use dmesg to check the output of printk.
+
+##############################################################################
