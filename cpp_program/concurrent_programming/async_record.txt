@@ -1,0 +1,51 @@
+# file: async_record.txt
+# author: zhang, bob
+# date: 2020-03-22
+# description: to record the study of async and future.
+
+1. Description of async and future
+    async() and future are defined in the <future> header, and future is the 
+    return of async() fucntion. Call async() function to start a async background 
+    thread to do something else, and get the result of the background thread by 
+    the returned future object of async() function.
+
+    async() has two versions:
+    version 1: 
+        template<class Fn, class... Args>
+        future<typename result_of<Fn(Args...)>::type>
+        async(Fn&& fn, Args&&... args);
+        The background thread will start after call the API or later or never.
+    version 2:
+        template<class Fn, class... Args>
+        future<typename result_of<Fn(Args...)>::type>
+        async(launch policy, Fn&& fn, Args&&... args);
+        the policy can set as std::launch::async and std::launch::deferred.
+        set to async will run the background thread immediately and the background
+        thread will run until called the wait() or get() of future.
+        std::launch::async:
+            run async task immediately
+            main thread will wait for the finish of async task at the end of life-
+                time of future object.
+            if we donot assign the return value of async() to a future object, the
+                main thread will wait the finish of async task at the call entr-
+                ance of async().
+        std::launch::deferred:
+            run async task when called the get() or wait().
+
+2. Use deferred to implement the lazy envaluation
+    auto f1 = async(launch::deferred, task1);
+    auto f2 = async(launch::deferred, task2);
+    ...
+    auto result = flag ? f1.get() : f2.get();
+
+3. get() or wait() can only call once, and the future object will be invalid after
+    the get() or wait() called, and we can check the valid status by calling
+    valid().
+
+4. wait_for() and wait_until()
+    We can check the status by the return of wait_for() and wait_until().
+
+
+
+
+
