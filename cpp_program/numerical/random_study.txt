@@ -1,0 +1,27 @@
+# author: Zhang, Bob
+# date: 2020-03-36
+# description: record the study node of random in C++11
+
+To generate a random number in C++11, we need two components. One is random engine, and 
+the other one is distribution.
+1. random engine
+    Random engine is the source of random number. And there are several random engines
+    in C++11, the one which we use mostly is std::default_random_engine, this may satisfied
+    our nomal reqirments.
+2. distribution
+    We can use distribution to distribute the number that comes from random engine, and
+    meet our own distribution requirments, for ex, uniform or normal?
+    There are several distribution models, too. We can pick the model by our requirement.
+
+3. generate random number
+    If we use the same random engine and same distribution, there will be same number 
+    sequence of random number. It means that each time we run our program, it will output
+    the same numbers from the distribution, absolutely, this is not what we want.
+    So, we should use some random number as a seed to input to the engine, then the
+    engine can output different number sequence. For ex, time duration between two click
+    events, or current system clock.
+    Usually, I like to use system clock.
+
+    auto time_count = duration_cast<millisenconds>(system_clock::now().time_since_epoch())
+    std::default_random_engine(time_count);
+
