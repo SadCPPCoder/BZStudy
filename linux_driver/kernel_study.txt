@@ -33,3 +33,14 @@
         We can use dmesg to check the output of printk.
 
 ##############################################################################
+
+2. EXPORT_SYMBOL
+
+    We can use EXPORT_SYMBOL to export a symbol to kernel, and other module can use the symbol by declare the symbol with extern key
+    word.
+
+    We can see all the symbols in "/proc/kallsyms".
+
+    We can use EXPORT_SYMBOL to exprot function or variables.
+
+##############################################################################
