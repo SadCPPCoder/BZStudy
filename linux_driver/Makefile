@@ -5,7 +5,7 @@
 # And this time, the KERNELRELEASE varible has been defined, so it will run the code in ifneq,
 # the kbuild sentences to declare the modules' dependencies.
 ifneq ($(KERNELRELEASE),)
-obj-m:=bz_module.o bz_add.o
+obj-m:=bz_module.o bz_add.o bz_completion_notify.o
 else
 KDIR:=/lib/modules/$(shell uname -r)/build
 all:

@@ -19,7 +19,7 @@ static int __init bz_module_init(void)
 
     printk("%s, sum of 5 and 6 is %d.\n", __func__, sum);
 
-    printk("%s, add function provided by %s, version: %d", bz_add_author, bz_add_version);
+    printk("%s, add function provided by %s, version: %d", __func__, bz_add_author, bz_add_version);
 
     return 0;
 }
@@ -27,7 +27,7 @@ static int __init bz_module_init(void)
 // __exit to add code to exit segment
 static void __exit bz_module_exit(void)
 {
-    printk("%s is called to uninstall Bob's module!\n");
+    printk("%s is called to uninstall Bob's module!\n", __func__);
 }
 
 module_init(bz_module_init);

@@ -43,4 +43,27 @@
 
     We can use EXPORT_SYMBOL to exprot function or variables.
 
+    Module A call the symbol of module B, If the call happend before the init finished of module B, Then the call will be blocked,
+    untill the module B init finished.
+
+##############################################################################
+
+3. completion
+
+    The completion is like signals, used to do synchronous in multiple threads.
+    head: <linux/completion.h>
+
+    declare: DECLARE_COMPLETION(test_completion) or static struct completion test_completion;
+
+    if we declare the completion by our self, then we should call init_complete(&test_completion) to init the completion.
+
+    wait:
+    wait_for_completion(&test_completion);
+    wait_for_completion_interruptible(&test_completion);
+    wait_for_completion_interruptible_timeout(&test_completion, msecs_to_jiffies(5000)); // 5s timeout
+    wait_for_completion_timeout(&test_completion, msecs_to_jiffies(5000)); // 5s timeout, jiffies function in <linux/jiffies.h>
+
+    complite:
+    when the job we expired finished, we should use complete(&test_completion) to notify the other waiting thread.
+
 ##############################################################################
