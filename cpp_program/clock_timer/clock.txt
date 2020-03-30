@@ -1,0 +1,39 @@
+# author: zhang, bob
+# date: 2020-03-30
+# description: record the usage of clock related library.
+
+1. Duration
+    Duration is a tyep to store a peroid of time.
+    It includes a tick and a ratio.
+        tick: record the length of the duration.
+        ratio: record the unit of the duration, it's based on second.
+        For ex: 1 minute == duration<int, ratio<60,1>> one_minute;
+                2 hours == duration<int, ratio<3600,1>> two_hours(2);
+    Fortunately, the standard library has already defined some usually used types:
+    nanoseconds/microseconds/milliseconds/seconds/minutes/hours.
+
+    And the low precision duration can convert to high precision duration by
+    default. For ex: 10s can convert to 10000ms(milliseconds).
+    But if we want to convert a duration from high resolution to low resolution,
+    we can not covert by default, because it may loss data.
+    And we should use duration_case<duration_type>(duration_value).
+
+2. Clock
+    Clock includes an epoch and a duration. It means the colock start at the
+    epoch time point, and run the time of duration.
+    We can get the current time point by the member fucntion now().
+    And judge whether the clock is a steady clock by is_steady(). If a clock
+    is not a steady clock, it's data can be modified, and the time point we
+    gain from this clock will changed, too.
+    For ex:
+        auto timepoint = system_clock::now();
+
+        this_thread::sleep_untill(timepoint + seconds(10));
+
+        // here if we changed the clock time to 60m before, this thread will 
+        // sleep for 60m and 10s.
+
+3. Timepoint
+      timepoint expresses one time point, it based on a clock and a duration.
+      we can convert one time point by use time_point_cast<>().
+      and we can get the duration of this timepoint by time_since_epoch().

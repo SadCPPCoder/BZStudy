@@ -10,5 +10,8 @@ ratio_demo:
 duration_demo:
 	$(CC) -o output duration_demo.cpp -std=$(STD)
 
+time_point_demo:
+	$(CC) -o output time_point_demo.cpp -std=$(STD)
+
 clean:
 	rm output
