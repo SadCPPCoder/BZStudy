@@ -7,13 +7,36 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <thread>
+#include <string>
+
+using namespace std;
+using namespace chrono;
+
+string getTimeString(system_clock::time_point &tp)
+{
+    time_t tt = system_clock::to_time_t(tp);
+    return ctime(&tt);
+}
 
 int main()
 {
-    using namespace std::chrono;
+    auto nowTime = system_clock::now();
 
-    std::cout << "now: " << duration_cast<milliseconds>(
-    system_clock::now().time_since_epoch()).count() << std::endl;
+    cout << "current time: " << getTimeString(nowTime);
+    
+    auto oneMinLater = nowTime + minutes(1);
 
-    std::cout << "now: " << system_clock::to_time_t(system_clock::now()) << std::endl;
+    cout << "one minute later: " << getTimeString(oneMinLater);
+    
+    do
+    {
+        // If we change our system time to 2 minutes before, then the while loop
+        // will totoaly run 3 minutes.
+        nowTime = system_clock::now();
+        cout << "current time: " << getTimeString(nowTime);
+        cout << "one minute later: " << getTimeString(oneMinLater);
+        this_thread::sleep_for(seconds(5));
+
+    } while(nowTime < oneMinLater);
 }

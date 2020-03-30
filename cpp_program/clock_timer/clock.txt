@@ -23,8 +23,8 @@
     epoch time point, and run the time of duration.
     We can get the current time point by the member fucntion now().
     And judge whether the clock is a steady clock by is_steady(). If a clock
-    is not a steady clock, it's data can be modified, and the time point we
-    gain from this clock will changed, too.
+    is not a steady clock, it's data can be modified, the logic of our program
+    may be affected.
     For ex:
         auto timepoint = system_clock::now();
 
