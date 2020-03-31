@@ -4,6 +4,8 @@
 #include <future>
 #include <chrono>
 #include <random>
+#include <memory>
+#include <typeinfo>
 
 using namespace std;
 
@@ -103,10 +105,67 @@ void async_demo2(bool flag)
     cout << "lazy evaluation result: " << result << ".\n";
 }
 
+enum var_type
+{
+    var_local = 0,
+    var_local_static,
+    var_global,
+    var_global_static,
+    var_type_cnt,
+};
+
+string varTypeStr(int type)
+{
+    static string type_arr[var_type_cnt] = {"var_local", "var_local_static", "var_global", "var_global_static"};
+
+    if(type<var_type_cnt)
+    {
+        return type_arr[type];
+    }
+
+    return "error type";
+}
+
+auto del = [](int* p)
+{
+    if(p)
+    {
+    cout << "del type: " << *p << "-" << varTypeStr(*p) << endl;
+    delete p;
+    p = nullptr;
+    }
+};
+
+void outputTest()
+{
+    using namespace std::chrono;
+    auto threr_secs_later = system_clock::now() + seconds(1);
+    while(system_clock::now() < threr_secs_later)
+    {
+        cout << '%';
+        this_thread::yield();
+    }
+}
+
+void async_demo_exit()
+{
+    shared_ptr<int> pInFunc(new int(var_local), del);
+    auto f = async(launch::async, outputTest);   
+    f.get();
+}
+
+static shared_ptr<int> pGlobalStatic(new int(var_global_static), del);
 int main()
 {
     //async_demo0();
     //async_demo1();
-    async_demo2(true);
-    async_demo2(false);
+    //async_demo2(true);
+    //async_demo2(false);
+
+    static shared_ptr<int> pStaticMain(new int(var_local_static), del);
+    shared_ptr<int> pMain(new int(99), del);
+
+    async_demo_exit();
+
+    cout << "enum item name: " << typeid(var_global).name() <<endl;
 }

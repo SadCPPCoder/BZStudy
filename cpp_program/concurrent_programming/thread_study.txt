@@ -1,0 +1,16 @@
+# record about thread's study notes.
+# author: zhang, bob
+# date: 2020-03-31
+
+Create thread
+    we can use std::thread in <thread> header to create a thread, and the thread
+    will start immediately after the object created. And if create thread failed.
+    the creator will throw an excption std::system_error.
+
+Thread finish
+    When the main function finished, and the thread has not been joined or detached,
+    the program will stop immediately and call std::terminate().
+    If we join the thread, then main thread will wait until the thread finished.
+    And if we detach a thread, then it will be stopped forcibly after main() finished.
+    And we should pay attention to the detached thread, because it may access the 
+    local or global or static resource when the program destroies them.
